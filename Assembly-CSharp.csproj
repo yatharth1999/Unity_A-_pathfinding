@@ -64,13 +64,18 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.15f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\UnitSelection\UnitSelections.cs" />
     <Compile Include="Assets\Simple Warships\Demo Scene\Rotate.cs" />
     <Compile Include="Assets\Script\PathRequestManager.cs" />
+    <Compile Include="Assets\SimpleCollectiblesPack\SimpleCollectibleScript.cs" />
+    <Compile Include="Assets\Script\PFAstar.cs" />
+    <Compile Include="Assets\Script\Camera Mgr\CameraMgr.cs" />
+    <Compile Include="Assets\Script\UnitSelection\UnitDrag.cs" />
     <Compile Include="Assets\Script\Seeker.cs" />
-    <Compile Include="Assets\Script\SeekerManager.cs" />
-    <Compile Include="Assets\Script\CameraMgr.cs" />
     <Compile Include="Assets\Script\PathFinding.cs" />
+    <Compile Include="Assets\Script\PotentialField.cs" />
     <Compile Include="Assets\Script\Heap.cs" />
+    <Compile Include="Assets\Script\UnitSelection\UnitClick.cs" />
     <Compile Include="Assets\Script\Units.cs" />
     <Compile Include="Assets\Script\Grid.cs" />
     <Compile Include="Assets\Script\Node.cs" />

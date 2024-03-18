@@ -1,8 +1,7 @@
-
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Grid : MonoBehaviour
 {
@@ -31,21 +30,8 @@ public class Grid : MonoBehaviour
      
   }
     void Update(){
-        if (Input.GetKeyUp(KeyCode.C)){
-            foreach (GameObject obj in spawnedObjects){
-            Destroy(obj);
-            }
-            spawnedObjects.Clear();
-            SpawnCubes();
-            CreateGrid();            
-        }
-        if (Input.GetKeyDown(KeyCode.C)){
-            foreach (GameObject obj in spawnedObjects){
-            Destroy(obj);
-            }
-            spawnedObjects.Clear();
-            CleanGrid();
-            CreateGrid();
+        if (Input.GetKeyDown(KeyCode.C)) {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
    public int MaxSize{
