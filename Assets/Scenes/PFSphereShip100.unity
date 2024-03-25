@@ -263,6 +263,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1813258765252098, guid: aea52f5da97018c4aaecffcdfa9035d8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 841348095}
+    - targetCorrespondingSourceObject: {fileID: 1813258765252098, guid: aea52f5da97018c4aaecffcdfa9035d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 841348096}
   m_SourcePrefab: {fileID: 100100000, guid: aea52f5da97018c4aaecffcdfa9035d8, type: 3}
 --- !u!1001 &230685311
 PrefabInstance:
@@ -1437,11 +1440,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
+  isActive: 0
   repulsionRadius: 1.5
   repulsionStrengthFactor: 4
+--- !u!114 &841348096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841348081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26e2061ccb5358c46bbf8221281e2cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1196626201}
+  speed: 0
+  waypoints: []
   isActive: 0
 --- !u!1 &854745818
 GameObject:
@@ -1543,7 +1562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada2bb6d008d84d429d15ca2f4a72da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seekers: []
 --- !u!4 &893252716 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4084037660503964, guid: aea52f5da97018c4aaecffcdfa9035d8, type: 3}
@@ -1561,12 +1579,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
+  isActive: 0
   repulsionRadius: 1.5
   repulsionStrengthFactor: 4
-  isActive: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,7 +1694,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada2bb6d008d84d429d15ca2f4a72da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seekers: []
 --- !u!4 &984011904 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4084037660503964, guid: aea52f5da97018c4aaecffcdfa9035d8, type: 3}
@@ -1694,12 +1711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
+  isActive: 0
   repulsionRadius: 1.5
   repulsionStrengthFactor: 4
-  isActive: 0
 --- !u!1001 &988002282
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1921,7 +1938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada2bb6d008d84d429d15ca2f4a72da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seekers: []
 --- !u!4 &1195488605 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4084037660503964, guid: aea52f5da97018c4aaecffcdfa9035d8, type: 3}
@@ -1939,12 +1955,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
+  isActive: 0
   repulsionRadius: 1.5
   repulsionStrengthFactor: 4
-  isActive: 0
 --- !u!1 &1196626200
 GameObject:
   m_ObjectHideFlags: 0
@@ -2147,12 +2163,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
+  isActive: 0
   repulsionRadius: 1.5
   repulsionStrengthFactor: 4
-  isActive: 0
 --- !u!4 &1312374851 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4122938131327598, guid: a37573ad5d3fb7a47997aadbf0976202, type: 3}
@@ -2475,12 +2491,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
+  isActive: 0
   repulsionRadius: 1.5
   repulsionStrengthFactor: 4
-  isActive: 0
 --- !u!1001 &1568883553
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2766,12 +2782,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
-  repulsionRadius: 1.5
-  repulsionStrengthFactor: 4
   isActive: 0
+  repulsionRadius: 5
+  repulsionStrengthFactor: 100
 --- !u!1 &1728772454 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1813258765252098, guid: aea52f5da97018c4aaecffcdfa9035d8, type: 3}
@@ -2818,12 +2834,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
-  repulsionRadius: 1.5
-  repulsionStrengthFactor: 4
   isActive: 0
+  repulsionRadius: 5
+  repulsionStrengthFactor: 10
 --- !u!4 &1763928975 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4122938131327598, guid: a37573ad5d3fb7a47997aadbf0976202, type: 3}
@@ -2851,7 +2867,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada2bb6d008d84d429d15ca2f4a72da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seekers: []
 --- !u!4 &1809240759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4084037660503964, guid: aea52f5da97018c4aaecffcdfa9035d8, type: 3}
@@ -2869,12 +2884,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
+  isActive: 0
   repulsionRadius: 1.5
   repulsionStrengthFactor: 4
-  isActive: 0
 --- !u!4 &1837475505 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4122938131327598, guid: a37573ad5d3fb7a47997aadbf0976202, type: 3}
@@ -3295,12 +3310,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c84fd24e87dc04a84e41eb171dbc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalPosition: {x: 0, y: 0, z: 0}
+  target: {fileID: 1196626201}
+  speed: 5
   waypoints: []
-  moveSpeed: 5
+  isActive: 0
   repulsionRadius: 1.5
   repulsionStrengthFactor: 4
-  isActive: 0
 --- !u!1001 &2054232138
 PrefabInstance:
   m_ObjectHideFlags: 0

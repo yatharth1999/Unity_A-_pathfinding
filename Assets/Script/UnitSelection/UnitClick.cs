@@ -5,9 +5,6 @@ public class UnitClick : MonoBehaviour
 { 
     public LayerMask clickable;
     public LayerMask ground;
-    void Start()
-    {
-    }
     void Update()
     {
         if(Input.GetMouseButtonDown(0)){
@@ -21,14 +18,12 @@ public class UnitClick : MonoBehaviour
                     UnitSelections.Instance.ControlClickSelect(hit.collider.gameObject);     
                 }
                 else{
-                    UnitSelections.Instance.ClickSelect(hit.collider.gameObject);
-                    Debug.Log(hit.collider.gameObject);
+                    UnitSelections.Instance.ClickSelect(hit.collider.gameObject);                
                 }
-                
-            }
             
             
         }
         
     }
+}
 }

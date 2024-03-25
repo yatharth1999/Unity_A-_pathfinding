@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,25 +14,25 @@ public class Grid : MonoBehaviour
   public float nodeRadius;
   float nodeDiameter;
   int gridSizeX,gridSizeY;
-
-  public GameObject[] innerPlanes; // Array of inner planes
+  public GameObject[] innerPlanes;
   public GameObject outerPlane;
-
-
+  
   void Start() {
     nodeDiameter = nodeRadius * 2;
     gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
     gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
     SpawnCubes();
-    CreateGrid();
-
-     
+    CreateGrid();   
   }
     void Update(){
         if (Input.GetKeyDown(KeyCode.C)) {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        if (Input.GetKeyDown(KeyCode.P)) {
+        SceneManager.LoadScene(0);
+        }
     }
+
    public int MaxSize{
     get{
         return gridSizeX*gridSizeY;
@@ -48,21 +47,9 @@ public class Grid : MonoBehaviour
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
 				bool walkable = !Physics.CheckSphere(worldPoint,nodeRadius,unwalkableMask);
 				grid[x,y] = new Node(walkable,worldPoint, x,y);
-                Debug.Log(walkable+ "  " +worldPoint+ "  " + x+ "  " +y);
 			}
 		}
 	}
-
-    public void CleanGrid(){
-        foreach (Node n in grid){
-            n.walkable = true;
-        }
-        for (int i = 0; i < gridSizeX; i++){
-            for (int j = 0; j < gridSizeY; j++){
-                grid[i, j].walkable = true;
-            }
-        }
-    }
   public Node NodeFromWorldPoint(Vector3 worldPosition){
     float percentX = (worldPosition.x + gridWorldSize.x/2)/gridWorldSize.x;
     float percentY = (worldPosition.z + gridWorldSize.y/2)/gridWorldSize.y;
@@ -86,7 +73,6 @@ public class Grid : MonoBehaviour
     }
     return neighbours;
   }
-
     void SpawnCubes(){
     Bounds outerBounds = outerPlane.GetComponent<Renderer>().bounds;
     float gapDistance = 15f; 
@@ -123,14 +109,4 @@ public class Grid : MonoBehaviour
         }
     }
 }  
-    void OnDrawGizmos() {
-        Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,1,gridWorldSize.y)); 
-        if(grid!=null&&pathGizmosShow){
-            foreach(Node n in grid){
-                Gizmos.color = n.walkable?Color.white:Color.blue;
-                Gizmos.DrawCube(n.worldPosition,Vector3.one*(nodeDiameter-.1f));
-            }
-        }
-    }
-
 }

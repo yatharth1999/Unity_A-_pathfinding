@@ -8,10 +8,8 @@ public class PotentialField : MonoBehaviour
     public Vector3 goalPosition;
     public List<Vector3> waypoints = new List<Vector3>();
     public float moveSpeed = 5.0f;
-    private bool isGoalReached = false;
     public float repulsionRadius = 1.5f;
     public float repulsionStrengthFactor = 4.0f;
-
     public bool isActive = false;
     private float conditionMetTimer = 0f;
     private const float conditionDurationThreshold = 1f; 
@@ -32,6 +30,7 @@ public class PotentialField : MonoBehaviour
         {
             MoveTowardsGoal();
         }
+        
     }
 
     void HandleInput()
@@ -52,7 +51,7 @@ public class PotentialField : MonoBehaviour
             waypoints.Add(newGoal);
             Debug.Log($"New waypoint added at: {newGoal}");
             if (waypoints.Count == 1) goalPosition = waypoints[0];
-            isGoalReached = false;
+            
         }
     }
 
@@ -99,7 +98,7 @@ public class PotentialField : MonoBehaviour
     {
         waypoints.RemoveAt(0); // Remove current waypoint
         if (waypoints.Count > 0) goalPosition = waypoints[0]; // Set next waypoint as goal
-        else isGoalReached = true;
+        
     }
 
     private Vector3 CalculateAttractiveForce()

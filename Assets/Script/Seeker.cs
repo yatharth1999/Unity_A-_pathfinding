@@ -19,13 +19,7 @@ public class Seeker : MonoBehaviour {
         target.GetComponent<Renderer>().enabled = false;
         UnitSelections.Instance.unitList.Add(this.gameObject);
     }
-
     void Update() {
-        if (Input.GetKeyUp(KeyCode.C))
-            {
-                Invoke("RequestPath",.1f);
-            }
-
         if (Input.GetMouseButtonDown(0)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -62,9 +56,6 @@ public class Seeker : MonoBehaviour {
     void RequestPath()
     {   
         if (target.GetComponent<Renderer>().enabled && isActive) {
-            foreach (GameObject cube in GameObject.FindGameObjectsWithTag("PathCube")){
-                Destroy(cube);
-            }
             PathRequestManager.RequestPath(transform.position, target.position, waypoints, OnPathFound);
         }
     }
@@ -82,6 +73,7 @@ public class Seeker : MonoBehaviour {
         while (true) {
             
             Vector3 currentWaypoint = path[targetIndex];
+            // Debug.Log(currentWaypoint);
             if (Vector3.Distance(transform.position, currentWaypoint) < 0.1f) {
                 targetIndex++;
                 if (targetIndex >= path.Length) {
@@ -100,12 +92,10 @@ public class Seeker : MonoBehaviour {
 
     void CheckWaypointReached() {
         if (waypoints.Count == 0) return;
-
-        Vector3 currentWaypoint = waypoints[0];
-        float distanceToWaypoint = Vector3.Distance(transform.position, currentWaypoint);
-        if (distanceToWaypoint < 1.0f)
-        {
+        if (Vector3.Distance(transform.position,waypoints[0]) < 1.0f)
             waypoints.RemoveAt(0); 
-        }
     }
+    
+
+
 }

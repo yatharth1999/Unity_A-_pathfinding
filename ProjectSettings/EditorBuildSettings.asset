@@ -4,5 +4,98 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/mainmenu.unity
+    guid: 8ac2c1cbd1b153d4dbfa8c8b6a24911e
+  - enabled: 1
+    path: Assets/Scenes/Sphere20.unity
+    guid: 5339df3c92933bc4d9b05e0bf986683b
+  - enabled: 1
+    path: Assets/Scenes/Sphere30.unity
+    guid: 4bf38b330c7fd4f4dad5740bad906c7e
+  - enabled: 1
+    path: Assets/Scenes/Sphere.unity
+    guid: 43c140d797350a24a803310054cde3bd
+  - enabled: 1
+    path: Assets/Scenes/astar.unity
+    guid: 6c3e5867d0107724d9f864ff29923a21
+  - enabled: 1
+    path: Assets/Scenes/Cube20.unity
+    guid: 95efe6a8a67d3344b8bdb7c2037a188c
+  - enabled: 1
+    path: Assets/Scenes/Cube30.unity
+    guid: 1e8d02d57c47cef429bb3c90a43b99c5
+  - enabled: 1
+    path: Assets/Scenes/Cube.unity
+    guid: e335f3e4c78cdea46a5a0092ae8cff3e
+  - enabled: 1
+    path: Assets/Scenes/office.unity
+    guid: 1aefab0109b8a5f45a0d4e0e5847c4a7
+  - enabled: 1
+    path: Assets/Scenes/SphereShip20.unity
+    guid: a19f87466a5fb0d418991016a3f93097
+  - enabled: 1
+    path: Assets/Scenes/SphereShip30.unity
+    guid: 82ef7233080ac8441a74ef284e52e9c5
+  - enabled: 1
+    path: Assets/Scenes/SphereShip.unity
+    guid: 2aa0deb8a89e4bf499577cd03aebf386
+  - enabled: 1
+    path: Assets/Scenes/astarShip.unity
+    guid: 764fdc371fc91e34b95396bd342df114
+  - enabled: 1
+    path: Assets/Scenes/CubeShip20.unity
+    guid: 7bfad77778de0e04ebc51409eaed3bbb
+  - enabled: 1
+    path: Assets/Scenes/CubeShip30.unity
+    guid: 256f0765929b4e3408c18efddeaa4701
+  - enabled: 1
+    path: Assets/Scenes/CubeShip.unity
+    guid: 9e74f1cb42b343c4f9eef08b0b866497
+  - enabled: 1
+    path: Assets/Scenes/officeShip.unity
+    guid: 4b3d8920f9639a9418b3ce9452ce9805
+  - enabled: 1
+    path: Assets/Scenes/PFCubeShip.unity
+    guid: ec845b93d9bf0a446babd2561c07e636
+  - enabled: 1
+    path: Assets/Scenes/PFCubeShip20.unity
+    guid: 207f315c0dda2fe449d4f648023263d5
+  - enabled: 1
+    path: Assets/Scenes/PFCubeShip30.unity
+    guid: bf57175e23c22074ba043d5d622bc55c
+  - enabled: 1
+    path: Assets/Scenes/PFSphereShip20.unity
+    guid: 55c05e9ec5e6e514e8e4bbbb6d3dd789
+  - enabled: 1
+    path: Assets/Scenes/PFSphereShip30.unity
+    guid: 8e4d2ba3f8cfdd945a1153bd1359032f
+  - enabled: 1
+    path: Assets/Scenes/PFSphereShip100.unity
+    guid: 85e6797c3b0df514ea554d4b6c2fb358
+  - enabled: 1
+    path: Assets/Scenes/PFAstarSphereShip20.unity
+    guid: b4beceac67b24c646a79bfd21259742d
+  - enabled: 1
+    path: Assets/Scenes/PFAstarSphereShip30.unity
+    guid: bd5f3dcdd9ffadb428dec86846e883ae
+  - enabled: 1
+    path: Assets/Scenes/PFAstarSphereShip100.unity
+    guid: 2fee7b87813acfe4f975bf0d08d980a5
+  - enabled: 1
+    path: Assets/Scenes/PFAstar.unity
+    guid: 2d32b6d2239878c42ba1ae0aad3dd087
+  - enabled: 1
+    path: Assets/Scenes/PFAstarCubeShip20.unity
+    guid: 79c7895469e606f479ce1c4303b00365
+  - enabled: 1
+    path: Assets/Scenes/PFAstarCubeShip30.unity
+    guid: bf926f21e2da6c34f88985561405aae2
+  - enabled: 1
+    path: Assets/Scenes/PFAstarCubeShip100.unity
+    guid: a85d4055e4415d74c910b25a630e404c
+  - enabled: 1
+    path: Assets/Scenes/PFAstaroffice.unity
+    guid: b5b753c0160e02e41a989fccddc285ee
   m_configObjects: {}

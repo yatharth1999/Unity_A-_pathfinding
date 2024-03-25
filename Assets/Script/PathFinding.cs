@@ -19,7 +19,6 @@ public class Pathfinding : MonoBehaviour {
 	IEnumerator FindPath(Vector3 startPos, Vector3 targetPos, List<Vector3> waypoints) {
 		Vector3[] path = new Vector3[0];
 		bool pathSuccess = false;
-		
 		Vector3 currentWaypoint = startPos;
 		Node startNode = grid.NodeFromWorldPoint(startPos);
 		Node targetNode = grid.NodeFromWorldPoint(targetPos);
@@ -67,6 +66,10 @@ public class Pathfinding : MonoBehaviour {
 
 					if (pathSuccess) {
 						Vector3[] partialPath = RetracePath(startWaypointNode, targetWaypointNode);
+						for(int j = 0; j < partialPath.Length; j++) {
+							// Debug.Log(partialPath[j]);
+						}
+						// Debug.Log(partialPath);
 						path = ConcatenatePaths(path, partialPath);
 					} else {
 						break;
@@ -77,17 +80,13 @@ public class Pathfinding : MonoBehaviour {
 				}
 			}
 		}
-
 		yield return null;
-
 		requestManager.FinishedProcessingPath(path, pathSuccess);
 	}
 	Vector3[] ConcatenatePaths(Vector3[] path1, Vector3[] path2) {
 		List<Vector3> concatenatedPath = new List<Vector3>();
 		concatenatedPath.AddRange(path1);
-		for (int i = 0; i < path2.Length; i++) {
-			concatenatedPath.Add(path2[i]);
-		}    
+		concatenatedPath.AddRange(path2);
 		return concatenatedPath.ToArray();
 	}
     Vector3[] RetracePath(Node startNode, Node endNode) {
@@ -101,6 +100,7 @@ public class Pathfinding : MonoBehaviour {
 
         Vector3[] waypoints = SimplifyPath(path);
         System.Array.Reverse(waypoints);
+		
         return waypoints;
     }
 
@@ -115,6 +115,7 @@ public class Pathfinding : MonoBehaviour {
             }
             directionOld = directionNew;
         }
+		// Debug.Log(waypoints);
         return waypoints.ToArray();
     }
 
@@ -126,4 +127,5 @@ public class Pathfinding : MonoBehaviour {
             return 14 * dstY + 10 * (dstX - dstY);
         return 14 * dstX + 10 * (dstY - dstX);
     }
+	
 }

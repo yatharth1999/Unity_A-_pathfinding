@@ -1,49 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class PFAstar : MonoBehaviour
+using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
+
+public class PFAstar : MonoBehaviour 
 {
-    Grid grid;
-    public Transform target;
-    public float speed ;
-    Vector3[] path;
-    int targetIndex;
-    private Vector3 lastTransformPos;
-    private Vector3 lastTargetPos;
-    public List<Vector3> waypoints = new List<Vector3>();
-    public bool isActive = false;
     public Vector3 goalPosition;
-    public float moveSpeed = 5.0f;
-    private bool isGoalReached = false;
     public float repulsionRadius = 1.5f;
     public float repulsionStrengthFactor = 4.0f;
-    private float conditionMetTimer = 0f;
-    private const float conditionDurationThreshold = 1f; 
+    public bool isActive = false;
+    private float timeElapsedWithoutProgress = 0f;
+    Grid grid;
+    public Transform target;
+    public float speed = 5.0f;
+    Vector3[] path;
+    int targetIndex;
 
+    public List<Vector3> waypoints = new List<Vector3>();
+    
     void Start() {
-        goalPosition = transform.position;
-        lastTransformPos = transform.position;
-        lastTargetPos = target.position;
         target.GetComponent<Renderer>().enabled = false;
         UnitSelections.Instance.unitList.Add(this.gameObject);
     }
+    void Update() {
+         if (timeElapsedWithoutProgress > 1f) {
+        // Reset the time elapsed
+        timeElapsedWithoutProgress = 0f;
 
-    void Update() {      
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Input.GetMouseButtonDown(0)){
-            if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)){
-                SetWaypoint();
-            }
+        // Request a new path
+         if (target.GetComponent<Renderer>().enabled ) {
+            PathRequestManager.RequestPath(transform.position, target.position, waypoints, OnPathFound);
         }
-        if (waypoints.Count > 0)
-        {
-            MoveTowardsGoal();
         }
-
         if (Input.GetMouseButtonDown(0)) {
-            
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
                 if (hit.collider.gameObject == gameObject)
@@ -57,27 +48,30 @@ public class PFAstar : MonoBehaviour
            
         }
         if (Input.GetMouseButtonDown(1)) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Target"))) {
                 target.GetComponent<Renderer>().enabled = true;
                 target.position = hit.point;
                 RequestPath();
             }
-            // if(Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift)){
-            //     if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Plane"))){
-            //         CheckWaypointReached();
-            //         waypoints.Add(hit.point);
-            //         Invoke("RequestPath",.1f);
-            //     }
-            // }
-        }   
+            if(Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift)){
+                if(isActive){
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Plane"))){
+                        CheckWaypointReached();
+                        waypoints.Add(hit.point);
+                        Invoke("RequestPath",.1f);
+                    }
+                }
+            }
+        }
+        CheckWaypointReached();
+
     }
     
     void RequestPath()
     {   
         if (target.GetComponent<Renderer>().enabled && isActive) {
-            foreach (GameObject cube in GameObject.FindGameObjectsWithTag("PathCube")){
-                Destroy(cube);
-            }
             PathRequestManager.RequestPath(transform.position, target.position, waypoints, OnPathFound);
         }
     }
@@ -90,126 +84,64 @@ public class PFAstar : MonoBehaviour
             StartCoroutine("FollowPath");
         }
     }
-
     IEnumerator FollowPath() {
         while (true) {
-            
             Vector3 currentWaypoint = path[targetIndex];
             if (Vector3.Distance(transform.position, currentWaypoint) < 0.1f) {
                 targetIndex++;
                 if (targetIndex >= path.Length) {
                     break;
                 }
+
                 currentWaypoint = path[targetIndex];
             }
-
-            // Vector3 directionToWaypoint = (currentWaypoint - transform.position).normalized;
-            // Quaternion lookRotation = Quaternion.LookRotation(directionToWaypoint);
-            // transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5* Time.deltaTime);
-            // transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
-            
-            Vector3 directionToWaypoint = (currentWaypoint - transform.position).normalized;
-            Vector3 avoidanceForce = AvoidAgentCollisions(); // Calculate avoidance force
+            Vector3 attractiveForce = CalculateAttractiveForce(currentWaypoint);
             Vector3 repulsiveForce = CalculateRepulsiveForce();
+            Vector3 avoidanceForce = AvoidAgentCollisions();
+            if ((repulsiveForce + attractiveForce).magnitude < 0.5f) {
+            if (waypoints.Count > 0) {
+                // If there are waypoints remaining, request a new path to the next waypoint
+                RequestPath();
+            } else {
+                // If no waypoints remaining, break out of the loop
+                break;
+            }
+        }
+            if ((repulsiveForce + attractiveForce).magnitude < 0.5f) {
             
-            Vector3 combinedDirection = (directionToWaypoint + avoidanceForce+repulsiveForce).normalized; // Combine with direction to waypoint
-            // Adjust rotation to face combined direction
-            Quaternion lookRotation = Quaternion.LookRotation(combinedDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5 * Time.deltaTime);
+            // If the seeker reaches the current waypoint, reset the time elapsed
+            timeElapsedWithoutProgress = 0f;
 
-        // Move towards the waypoint, adjusted by avoidance
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + combinedDirection, speed * Time.deltaTime);
+            targetIndex++;
+            if (targetIndex >= path.Length) {
+                break;
+            }
+
+            currentWaypoint = path[targetIndex];
+             } else {
+            // If the seeker is moving towards the waypoint, update the time elapsed
+            timeElapsedWithoutProgress += Time.deltaTime;
+            }
+            Vector3 totalForce = attractiveForce + repulsiveForce + avoidanceForce;
+            totalForce = new Vector3(totalForce.x, 0, totalForce.z);
+            Quaternion targetRotation = Quaternion.LookRotation(totalForce.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            transform.position += totalForce.normalized * speed * Time.deltaTime;
+            if (Vector3.Distance(transform.position, currentWaypoint) < 2f) {
+                CheckWaypointReached();
+            }
             yield return null;
         }
     }
-
-    void CheckWaypointReached() {
-        if (waypoints.Count == 0) return;
-
-        Vector3 currentWaypoint = waypoints[0];
-        float distanceToWaypoint = Vector3.Distance(transform.position, currentWaypoint);
-        if (distanceToWaypoint < 1.0f)
-        {
-            waypoints.RemoveAt(0); 
-        }
-    }
-
-   
-    void HandleInput()
+    private Vector3 CalculateAttractiveForce(Vector3 goalPosition)
     {
-        
-    }
-
-    void SetWaypoint()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Plane")))
-        {
-            Vector3 newGoal = new Vector3(hit.point.x, 0, hit.point.z);
-            waypoints.Add(newGoal);
-            Debug.Log($"New waypoint added at: {newGoal}");
-            if (waypoints.Count == 1) goalPosition = waypoints[0];
-            isGoalReached = false;
-        }
-    }
-
-    void MoveTowardsGoal()
-    {
-        Vector3 attractiveForce = CalculateAttractiveForce();
-        Vector3 repulsiveForce = CalculateRepulsiveForce();
-        Vector3 avoidanceForce = AvoidAgentCollisions();
-        if ((repulsiveForce + attractiveForce).magnitude < 0.5f)
-    {
-        // Increment the timer by the time elapsed since the last frame
-        conditionMetTimer += Time.deltaTime;
-
-        // Check if the condition has been true for more than 3 seconds
-        if (conditionMetTimer >= conditionDurationThreshold)
-        {
-            // Skip the waypoint and reset the timer
-            SkipCurrentWaypoint();
-            conditionMetTimer = 0f; // Reset the timer
-        }
-    }
-    else
-    {
-        // Reset the timer if the condition is not met
-        conditionMetTimer = 0f;
-    }
-        // Vector3 potentialforce = CalculatePotentialFieldForce();
-        Vector3 totalForce = attractiveForce + repulsiveForce + avoidanceForce;
-        totalForce = new Vector3(totalForce.x,0,totalForce.z);
-        Debug.Log($"Attractive Force: {attractiveForce}, Repulsive Force: {repulsiveForce}, Total Force: {totalForce.normalized}");
-
-        Quaternion targetRotation = Quaternion.LookRotation(totalForce.normalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-
-        transform.position += totalForce.normalized * moveSpeed * Time.deltaTime;
-
-        if (Vector3.Distance(transform.position, goalPosition) < 2f)
-        {
-            SkipCurrentWaypoint();
-        }
-    }
-
-    void SkipCurrentWaypoint()
-    {
-        waypoints.RemoveAt(0); // Remove current waypoint
-        if (waypoints.Count > 0) goalPosition = waypoints[0]; // Set next waypoint as goal
-        else isGoalReached = true;
-    }
-
-    private Vector3 CalculateAttractiveForce()
-    {
-        Vector3 agentToGoal = goalPosition - transform.position;
+        Vector3 agentToGoal = (goalPosition - transform.position)*2.0f;
         return agentToGoal.normalized;
     }
 
     private Vector3 CalculateRepulsiveForce()
     {
         Vector3 repulsiveForce = Vector3.zero;
-
         int numRays = 8;
         for (int i = 0; i < numRays; i++)
         {
@@ -219,7 +151,7 @@ public class PFAstar : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, rayDirection, out hit, repulsionRadius))
             {
-                if (hit.collider.gameObject != gameObject)
+                if (hit.collider.gameObject != gameObject&&hit.collider.CompareTag("Obstacle"))
                 {
                     Vector3 agentToObstacle = transform.position - hit.point;
                     float additionalRepulsion = 1.0f - (hit.distance / repulsionRadius);
@@ -227,34 +159,42 @@ public class PFAstar : MonoBehaviour
                 }
             }
         }
-
         return repulsiveForce.normalized;
     }
 
-    
-    Vector3 AvoidAgentCollisions()
+    private Vector3 AvoidAgentCollisions()
     {
-        float avoidanceRadius = .5f;
+        Vector3 avoidanceForce = Vector3.zero;
+        int numRays = 100;
+        float avoidanceRadius = 1f;
         float avoidanceForceFactor = 5.0f;
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, avoidanceRadius);
-        Vector3 avoidanceForce = Vector3.zero;
-
-        foreach (Collider collider in hitColliders)
+        for (int i = 0; i < numRays; i++)
         {
-            if (collider.gameObject != gameObject && collider.CompareTag("Seeker"))
-            {
-                Vector3 agentToOtherAgent = transform.position - collider.transform.position;
-                float distance = agentToOtherAgent.magnitude;
+            float angle = i * 2 * Mathf.PI / numRays;
+            Vector3 rayDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
 
-                if (distance < avoidanceRadius)
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, rayDirection, out hit, avoidanceRadius))
+            {
+                if (hit.collider.gameObject != gameObject && hit.collider.CompareTag("Seeker"))
                 {
-                    float avoidanceStrength = 1.0f - (distance / .5f);
-                    avoidanceForce += agentToOtherAgent.normalized * avoidanceStrength;
+                    Vector3 agentToOtherAgent = transform.position - hit.point;
+                    float additionalRepulsion = 1.0f - (hit.distance / avoidanceRadius);
+                    avoidanceForce += agentToOtherAgent.normalized * additionalRepulsion * avoidanceForceFactor;
                 }
             }
         }
 
-        return avoidanceForce.normalized * avoidanceForceFactor;
+        return avoidanceForce.normalized;
     }
+
+    void CheckWaypointReached() {
+        if (waypoints.Count == 0) return;
+        if (Vector3.Distance(transform.position,waypoints[0]) < 5.0f)
+            waypoints.RemoveAt(0); 
+    }
+
+
 }
+

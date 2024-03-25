@@ -29,7 +29,6 @@ public class UnitSelections : MonoBehaviour
     }
     public void ClickSelect (GameObject unitToAdd){
         DeselectAll();
-        Debug.Log("UnitSelection"+"  "+unitToAdd);
         unitSelected.Add(unitToAdd);
         unitToAdd.transform.GetChild(2).gameObject.SetActive(true);
         Seeker seekerComponent = unitToAdd.GetComponent<Seeker>();
@@ -42,6 +41,11 @@ public class UnitSelections : MonoBehaviour
             if (potential != null) {
         
             potential.isActive = true;
+        }
+        PFAstar pfa = unitToAdd.GetComponent<PFAstar>();
+            if (pfa != null) {
+        
+            pfa.isActive = true;
         }
     }
     public void ControlClickSelect (GameObject unitToAdd){
@@ -58,6 +62,11 @@ public class UnitSelections : MonoBehaviour
         
             potential.isActive = true;
             }
+            PFAstar pfa = unitToAdd.GetComponent<PFAstar>();
+            if (pfa != null) {
+        
+            pfa.isActive = true;
+        }
             
         }
         else{
@@ -73,6 +82,11 @@ public class UnitSelections : MonoBehaviour
         
             potential.isActive = false;
             }
+            PFAstar pfa = unitToAdd.GetComponent<PFAstar>();
+            if (pfa != null) {
+        
+            pfa.isActive = false;
+        }
         }
     }
     public void DragSelect(GameObject unitToAdd){
@@ -90,6 +104,11 @@ public class UnitSelections : MonoBehaviour
         
             potential.isActive = true;
             }
+            PFAstar pfa = unitToAdd.GetComponent<PFAstar>();
+            if (pfa != null) {
+        
+            pfa.isActive = true;
+            }
         }
     }
     public void DeselectAll(){
@@ -104,6 +123,11 @@ public class UnitSelections : MonoBehaviour
             if (potential != null) {
         
             potential.isActive =false;
+            }
+            PFAstar pfa = unit.GetComponent<PFAstar>();
+            if (pfa != null) {
+        
+            pfa.isActive = false;
             }
         }
         unitSelected.Clear();
